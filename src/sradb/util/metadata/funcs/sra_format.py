@@ -2,11 +2,13 @@
 # contributors: smlee
 
 # History
+# 2024-04-10 v1.0.1 - add get row method to all classes
 # 2024-04-07 v1.0.0 - first commit
 
 # Module
 from dataclasses import dataclass
 from typing import List, Dict
+from ..conf.columns import *
 
 # Main
 @dataclass
@@ -35,6 +37,25 @@ class Submission(object):
         self.center:str = self._data.get('center', None)
         self.visibility:str = self._data.get('visibility', None)
         self.replacedby:str = self._data.get('replacedby', None)
+    
+    def get_row(self):
+        """Get row information
+        """
+        hdr = submission_c
+        row = [self.accession, 
+               self.studies, 
+               self.experiments, 
+               self.samples, 
+               self.runs, 
+               self.status, 
+               self.updated, 
+               self.published, 
+               self.received, 
+               self.center, 
+               self.visibility, 
+               self.replacedby]
+        
+        return dict(zip(hdr, row))
 
 @dataclass
 class Sample(object):
@@ -60,6 +81,21 @@ class Sample(object):
         self.taxid:int = None
         self.organism:str = None
 
+    def get_row(self):
+        """Get row information
+        """
+        hdr = sample_c
+        row = [self.accession,
+               self.submission,
+               self.taxid,
+               self.organism,
+               self.biosample,
+               self.updated,
+               self.published,
+               self.received]
+        
+        return dict(zip(hdr, row))
+
 @dataclass
 class Run(object):
     """SRA Run class object
@@ -83,6 +119,23 @@ class Run(object):
         self.updated:str = self._data.get('updated', None)
         self.published:str = self._data.get('published', None)
         self.received:str = self._data.get('received', None)
+    
+    def get_row(self):
+        """Get row information
+        """
+        hdr = run_c
+        row = [self.accession,
+               self.submission,
+               self.experiment,
+               self.sample,
+               self.study,
+               self.bioproject,
+               self.biosample,
+               self.updated,
+               self.published,
+               self.received]
+        
+        return dict(zip(hdr, row))
 
 @dataclass
 class Study(object):
@@ -107,6 +160,22 @@ class Study(object):
         self.published:str = self._data.get('published', None)
         self.received:str = self._data.get('received', None)
 
+    def get_row(self):
+        """Get row information
+        """
+        hdr = study_c
+        row = [self.accession,
+               self.submission,
+               self.bioproject,
+               self.title,
+               self.type,
+               self.study_links,
+               self.updated,
+               self.published,
+               self.received]
+        
+        return dict(zip(hdr, row))
+
 @dataclass
 class Experiment(object):
     """SRA Experiment class object
@@ -121,6 +190,7 @@ class Experiment(object):
     source:str = None
     selection:str = None
     layout:str = None
+
     def __post_init__(self):
         """Post initialization
         """
@@ -131,3 +201,22 @@ class Experiment(object):
         self.updated:str = self._data.get('updated', None)
         self.published:str = self._data.get('published', None)
         self.received:str = self._data.get('received', None)
+    
+    def get_row(self):
+        """Get row information
+        """
+        hdr = experiment_c
+        row = [self.accession,
+               self.submission,
+               self.bioproject,
+               self.biosample,
+               self.instrument,
+               self.strategy,
+               self.source,
+               self.selection,
+               self.layout,
+               self.updated,
+               self.published,
+               self.received]
+        
+        return dict(zip(hdr, row))
